@@ -1,44 +1,57 @@
 #include "sort.h"
-
 /**
- * insertion_sort_list - Sorts a doubly linked list of integers
- *                       in ascending order using Insertion sort
- * @list: Pointer to the head of the doubly linked list
+ * swap - swap 2 element in an list
+ * @head: head of list
+ * @x: node
+ * @y: node
+ */
+void swap(listint_t *x, listint_t *y, listint_t **head)
+{
+	listint_t *aux1 = NULL, *aux2 = NULL;
+
+	if (x == NULL || y == NULL)
+		return;
+	aux1 = x->prev;
+	aux2 = y->next;
+	
+	if (aux1)
+		aux1->next = y;
+	if (aux2)
+		aux2->prev = x;
+	x->next = aux2;
+	x->prev = y;
+	y->next = x;
+	y->prev = aux1;
+	if (aux1 == NULL)
+		*head = y;
+}
+/**
+ * insertion_sort_list  - insertion_sort_list
+ * @list: doubly liked list
+ *
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *current, *prev, *temp;
+	listint_t *head, *prev;
+	int value;
 
-	/* Check if list is empty or has 1 element */
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
-		return;
-
-	current = (*list)->next;
-
-	while (current != NULL)
+	if (list == NULL || (*list)->next == NULL || (*list) == NULL)
 	{
-		temp = current;
-		prev = current->prev;
+		return;
+	}
+	head = *list;
+	while (head)
+	{
+		prev = head->prev;
+				value = head->n;
 
-		while (prev != NULL && prev->n > temp->n)
+		while (prev && prev->n > value)
 		{
-			/* Swap nodes */
-			if (temp->next != NULL)
-				temp->next->prev = prev;
-			prev->next = temp->next;
-			temp->next = prev;
-			temp->prev = prev->prev;
-			prev->prev = temp;
-
-			if (temp->prev != NULL)
-				temp->prev->next = temp;
-			else
-				*list = temp;
-
-			print_list(*list); /* Print the list after each swap */
-			prev = temp->prev;
+			swap(prev, head, list);
+			print_list(*list);
+			prev = head->prev;
 		}
-
-		current = current->next;
+		head = head->next;
 	}
 }
+
