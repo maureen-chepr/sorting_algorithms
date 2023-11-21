@@ -1,31 +1,17 @@
-#include <stdlib.h>
 #include "sort.h"
+#include <stdint.h>
 
 /**
- * countSort - Counting sort algorithm for Radix sort
- *
- * @array: Array to be sorted
+ * getMax - Returns the maximum element from an array
+ * @array: Array of integers
  * @size: Size of the array
- * @exp: Exponent for the current significant digit
- * @buff: Buffer for temporary storage
+ * Return: The maximum element
  */
-void countSort(int *array, size_t size, int exp, int *buff);
 
-/**
- * radix_sort - Sorts an array of integers in ascending order using Radix sort
- *
- * @array: Array of data to be sorted
- * @size: Size of the array
- */
-void radix_sort(int *array, size_t size)
+int getMax(int *array, size_t size)
 {
-	size_t i;
 	int max = array[0];
-	int exp = 1;
-	int *buff;
-
-	if (size < 2)
-		return;
+	size_t i;
 
 	for (i = 1; i < size; i++)
 	{
@@ -33,45 +19,61 @@ void radix_sort(int *array, size_t size)
 			max = array[i];
 	}
 
-	buff = malloc(sizeof(int) * size);
-	if (!buff)
-		return;
-
-	for (exp = 1; max / exp > 0; exp *= 10)
-	{
-		countSort(array, size, exp, buff);
-		print_array(array, size);
-	}
-
-	free(buff);
+	return (max);
 }
 
 /**
- * countSort - Counting sort algorithm for Radix sort
- *
- * @array: Array to be sorted
+ * countingSort - Performs counting sort based on significant place
+ * @array: Array of integers
  * @size: Size of the array
- * @exp: Exponent for the current significant digit
- * @buff: Buffer for temporary storage
+ * @exp: Exponent, representing the significant place
  */
-void countSort(int *array, size_t size, int exp, int *buff)
+
+void countingSort(int *array, size_t size, int exp)
 {
-	int carr[10] = {0};
+	int *output = malloc(sizeof(int) * size);
+	int count[10] = {0};
 	size_t i;
 
-	for (i = 0; i < size; i++)
-		carr[(array[i] / exp) % 10]++;
-
-	for (i = 1; i < 10; i++)
-		carr[i] += carr[i - 1];
-
-	for (i = size - 1; i < size; i--)
+	if (output == NULL)
 	{
-		buff[carr[(array[i] / exp) % 10] - 1] = array[i];
-		carr[(array[i] / exp) % 10]--;
+		perror("Malloc failed");
+		exit(EXIT_FAILURE);
 	}
 
 	for (i = 0; i < size; i++)
-		array[i] = buff[i];
+		count[(array[i] / exp) % 10]++;
+
+	for (i = 1; i < 10; i++)
+		count[i] += count[i - 1];
+
+	for (i = size - 1; i < SIZE_MAX; i--)
+	{
+		output[count[(array[i] / exp) % 10] - 1] = array[i];
+		count[(array[i] / exp) % 10]--;
+	}
+
+	for (i = 0; i < size; i++)
+		array[i] = output[i];
+
+	print_array(array, size);
+
+	free(output);
 }
 
+/**
+ * radix_sort - Sorts an array of integers in ascending order using Radix sort
+ * @array: Array of integers
+ * @size: Size of the array
+ */
+
+void radix_sort(int *array, size_t size)
+{
+	int max = getMax(array, size);
+	size_t exp;
+
+	for (exp = 1; max / exp > 0; exp *= 10)
+	{
+		countingSort(array, size, exp);
+	}
+}
