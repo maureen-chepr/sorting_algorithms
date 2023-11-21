@@ -35,4 +35,5 @@ void bitonic_sort(int *array, size_t size);
 void quick_sort_hoare(int *array, size_t size);
 void swap_nodes(listint_t **list, listint_t *node1, listint_t *node2);
 void printcheck(int *array, int r1, int r2);
+void countSort(int *array, size_t size, int exp, int *buff);
 #endif
