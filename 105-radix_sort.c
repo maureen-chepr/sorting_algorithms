@@ -1,5 +1,4 @@
 #include "sort.h"
-#include <stdint.h>
 
 /**
  * get_max - Returns the maximum element from an array
@@ -49,10 +48,10 @@ void count_sort(int *array, size_t size, int exp)
 	for (i = 1; i < 10; i++)
 		count[i] += count[i - 1];
 
-	for (i = size - 1; i < SIZE_MAX; i--)
+	for (i = 0; i < size; i++)
 	{
-		output[count[(array[i] / exp) % 10] - 1] = array[i];
-		count[(array[i] / exp) % 10]--;
+		output[count[(array[size - 1 - i] / exp) % 10] - 1] = array[size - 1 - i];
+		count[(array[size - 1 - i] / exp) % 10]--;
 	}
 
 	for (i = 0; i < size; i++)
