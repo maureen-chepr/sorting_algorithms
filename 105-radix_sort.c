@@ -10,8 +10,10 @@
 
 int get_max(int *array, size_t size)
 {
-	int max = array[0];
+	int max;
 	size_t i;
+
+	max = *array;
 
 	for (i = 1; i < size; i++)
 	{
@@ -31,10 +33,11 @@ int get_max(int *array, size_t size)
 
 void count_sort(int *array, size_t size, int exp)
 {
-	int *output = malloc(sizeof(int) * size);
+	int *output;
 	int count[10] = {0};
 	size_t i;
 
+	output = malloc(sizeof(int) * size);
 	if (output == NULL)
 	{
 		return;
