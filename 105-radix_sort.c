@@ -2,13 +2,13 @@
 #include <stdint.h>
 
 /**
- * getMax - Returns the maximum element from an array
+ * get_max - Returns the maximum element from an array
  * @array: Array of integers
  * @size: Size of the array
  * Return: The maximum element
  */
 
-int getMax(int *array, size_t size)
+int get_max(int *array, size_t size)
 {
 	int max = array[0];
 	size_t i;
@@ -23,13 +23,13 @@ int getMax(int *array, size_t size)
 }
 
 /**
- * countingSort - Performs counting sort based on significant place
+ * count_sort - Performs counting sort based on significant place
  * @array: Array of integers
  * @size: Size of the array
  * @exp: Exponent, representing the significant place
  */
 
-void countingSort(int *array, size_t size, int exp)
+void count_sort(int *array, size_t size, int exp)
 {
 	int *output = malloc(sizeof(int) * size);
 	int count[10] = {0};
@@ -37,8 +37,7 @@ void countingSort(int *array, size_t size, int exp)
 
 	if (output == NULL)
 	{
-		perror("Malloc failed");
-		exit(EXIT_FAILURE);
+		return;
 	}
 
 	for (i = 0; i < size; i++)
@@ -69,11 +68,16 @@ void countingSort(int *array, size_t size, int exp)
 
 void radix_sort(int *array, size_t size)
 {
-	int max = getMax(array, size);
+	int max = get_max(array, size);
 	size_t exp;
 
-	for (exp = 1; max / exp > 0; exp *= 10)
+	if (size > 1)
 	{
-		countingSort(array, size, exp);
+		max = get_max(array, size);
+
+		for (exp = 1; max / exp > 0; exp *= 10)
+		{
+			count_sort(array, size, exp);
+		}
 	}
 }
