@@ -38,4 +38,8 @@ void quick_sort_hoare(int *array, size_t size);
 void swap_nodes(listint_t **list, listint_t *node1, listint_t *node2);
 void printcheck(int *array, int r1, int r2);
 void countSort(int *array, size_t size, int exp, int *buff);
+void _swap(int *array, ssize_t item1, ssize_t item2);
+int hoare_partition(int *array, int f_el, int l_el, int size);
+void q_h_sort(int *array, ssize_t f_el, ssize_t l_el, int size);
+void quick_sort_hoare(int *array, size_t size);
 #endif
